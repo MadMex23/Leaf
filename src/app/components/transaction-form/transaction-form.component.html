@@ -1,0 +1,37 @@
+<fieldset id="divTransactionForm">
+  <legend>Add Transaction</legend>
+  <form id="transactionForm" [formGroup]="transactionValues">
+    <div>
+      <select formControlName="type" name="type" id="typeSelect" [ngClass]="{'error': typeError}"
+        (ngModelChange)="isTypeValid(transactionValues.controls['type'].errors)">
+        <option class="typeOption" value="" hidden>Transaction Type</option>
+        <option class="typeOption" value="Adjustment">Adjustment</option>
+        <option class="typeOption" value="Deposit">Deposit</option>
+        <option class="typeOption" value="Payment">Payment</option>
+        <option class="typeOption" value="Purchase">Purchase</option>
+        <option class="typeOption" value="Transfer">Transfer</option>
+      </select>
+      <small name="type" class="error-msj">{{typeError}}</small>
+    </div>
+    <div>
+      <input formControlName="description" type="text" [ngClass]="{'error': descriptionError}" (ngModelChange)="isDescriptionValid(
+      transactionValues.controls['description'].errors
+    )" placeholder="Description">
+      <small name="description" class="error-msj">{{descriptionError}}</small>
+    </div>
+    <div>
+      <input formControlName="date" type="date" [max]="getToday()" [ngClass]="{'error': dateError}"
+        (ngModelChange)="isDateValid(transactionValues.controls['date'].errors);">
+      <small name="date" class="error-msj">{{dateError}}</small>
+    </div>
+    <div>
+      <div>
+        <span id="currencySign">$</span>
+        <input formControlName="amount" type="number" step=".01" [ngClass]="{'error': amountError}"
+          (ngModelChange)="isAmountValid(transactionValues.controls['amount'].errors)" placeholder="Amount">
+        <small name="amount" class="error-msj">{{amountError}}</small>
+      </div>
+    </div>
+    <button (click)="addTransaction()">Add</button>
+  </form>
+</fieldset>

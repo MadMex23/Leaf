@@ -1,0 +1,119 @@
+* {
+  --main-bg-color: #232931;
+  --secondary-bg-color: #2aa98a;
+  --wrong: #ff0000;
+  box-sizing: border-box;
+}
+
+body {
+  padding: 25px 25px 12px 25px;
+  background-color: var(--main-bg-color);
+}
+
+#divLogo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#logo {
+  background-color: transparent;
+  filter: drop-shadow(2px 2px 2px rgb(25, 25, 25));
+  width: 60px;
+  height: auto;
+  margin-bottom: 15px;
+}
+
+#main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 515px;
+}
+
+#welcome {
+  font-family: "Inter", sans-serif;
+  grid-column: 1/2;
+  border-right: 2px solid var(--secondary-bg-color);
+  padding: 0px 60px;
+}
+#welcome h1 {
+  color: var(--secondary-bg-color);
+  font-size: 40px;
+  text-align: center;
+}
+
+#welcome h2 {
+  color: #757575;
+  text-align: center;
+}
+
+#welcome p {
+  color: whitesmoke;
+  font-size: 20px;
+  line-height: 30px;
+  text-align: justify;
+}
+
+#welcome p strong {
+  color: var(--secondary-bg-color);
+}
+
+#inside-leaf {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#inside-leaf img {
+  width: 450px;
+  height: auto;
+  background-color: transparent;
+  filter: drop-shadow(2px 2px 2px whitesmoke);
+}
+
+.div-form {
+  grid-column: 2/3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  height: 100%;
+}
+
+.div-change-form {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+.change-form {
+  width: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 2px solid var(--secondary-bg-color);
+}
+
+.change-form p {
+  color: whitesmoke;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.change-form strong {
+  font-style: normal;
+  color: var(--secondary-bg-color);
+}
+
+.change-form strong:hover {
+  text-decoration: underline;
+}
+
+#changeToLogin,
+#changeToSignup {
+  cursor: pointer;
+}

@@ -1,0 +1,15 @@
+<div class="div-form">
+  <h1>Log In</h1>
+  <form [formGroup]="loginValues" id="loginForm" class="form">
+    <input formControlName="email" type="text" placeholder="EMAIL" [ngClass]="{'error': emailError}" />
+    <small name="email" class="error-msj">{{emailError}}</small>
+    <i id="login-password-eye" name="password" (click)="changePasswordType()">
+      <img src="./assets/eye-close.png" alt="Hide Password" *ngIf="!showPassword">
+      <img src="./assets/eye-open.png" alt="Show Password" *ngIf="showPassword">
+    </i>
+    <input formControlName="password" type="{{showPassword ? 'text' : 'password'}}" placeholder="PASSWORD"
+      [ngClass]="{'error': passwordError}">
+    <small name="password" class="error-msj">{{passwordError}}</small>
+    <button id="loginBtn" class="form-button" (click)="submitLogin()">LOG IN</button>
+  </form>
+</div>

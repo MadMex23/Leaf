@@ -1,0 +1,232 @@
+body {
+  background-color: var(--main-bg-color);
+  display: grid;
+  grid-template-rows: 11vh 78vh 11vh;
+  font-family: "Inter", sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  overflow: hidden;
+}
+
+header {
+  grid-row: 1/2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--secondary-bg-color);
+  padding: 0 20px;
+}
+
+#logo {
+  width: 158px;
+  background-color: transparent;
+  filter: drop-shadow(2px 2px 2px rgb(25, 25, 25));
+}
+
+#div-logout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swal2-title {
+  font-family: "Inter";
+}
+
+#greetings {
+  color: var(--secondary-bg-color);
+  margin-right: 10px;
+}
+
+#greetings strong {
+  color: whitesmoke;
+  font-weight: 400;
+}
+
+#log-out-btn {
+  height: 55px;
+  margin: 5px 0 5px 20px;
+  background-color: transparent;
+  filter: invert(58%) sepia(40%) saturate(685%) hue-rotate(114deg)
+    brightness(88%) contrast(89%) drop-shadow(2px 2px 2px rgb(25, 25, 25));
+}
+
+#log-out-btn:hover {
+  filter: invert(100%) sepia(1%) saturate(7488%) hue-rotate(184deg)
+    brightness(113%) contrast(93%) drop-shadow(2px 2px 2px rgb(25, 25, 25));
+  cursor: pointer;
+}
+
+#log-out-btn:active {
+  filter: none;
+}
+
+main {
+  grid-row: 2/3;
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  height: 78vh;
+}
+
+#accounts-column {
+  grid-column: 1/2;
+  background-color: var(--secondary-bg-color);
+}
+
+#accounts-column div {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-bottom: 2px solid var(--main-bg-color);
+}
+
+#accounts-column img {
+  padding: 10px;
+}
+
+#accounts-column h2,
+.account-name {
+  color: whitesmoke;
+  font-size: 18px;
+}
+
+#accounts-column div:hover:not(.active-account) {
+  outline: 2px solid whitesmoke;
+  border-right: 0;
+  border-radius: 5px 0 0 5px;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+
+#imgHome {
+  background-color: transparent;
+  filter: invert(100%) sepia(97%) saturate(0%) hue-rotate(158deg)
+    brightness(110%) contrast(100%)
+    drop-shadow(2px 2px 2px var(--main-bg-color));
+}
+
+#imgCash {
+  background-color: transparent;
+  filter: invert(82%) sepia(8%) saturate(3046%) hue-rotate(306deg)
+    brightness(105%) contrast(102%)
+    drop-shadow(2px 2px 2px var(--main-bg-color));
+}
+
+#imgBank {
+  background-color: transparent;
+  filter: invert(98%) sepia(4%) saturate(3242%) hue-rotate(24deg)
+    brightness(114%) contrast(104%)
+    drop-shadow(2px 2px 2px var(--main-bg-color));
+}
+
+#imgCredit {
+  background-color: transparent;
+  filter: invert(100%) sepia(43%) saturate(5009%) hue-rotate(189deg)
+    brightness(92%) contrast(95%) drop-shadow(2px 2px 2px var(--main-bg-color));
+}
+
+#imgTransport {
+  background-color: transparent;
+  filter: invert(71%) sepia(30%) saturate(431%) hue-rotate(145deg)
+    brightness(99%) contrast(99%) drop-shadow(2px 2px 2px var(--main-bg-color));
+}
+
+#imgSavings {
+  background-color: transparent;
+  filter: invert(86%) sepia(3%) saturate(2340%) hue-rotate(303deg)
+    brightness(101%) contrast(108%)
+    drop-shadow(2px 2px 2px var(--main-bg-color));
+}
+
+#imgNewAccount {
+  background-color: transparent;
+  height: 48px;
+  filter: invert(97%) sepia(12%) saturate(194%) hue-rotate(7deg) brightness(88%)
+    contrast(83%) drop-shadow(2px 2px 2px var(--main-bg-color));
+}
+
+.active-account {
+  background-color: var(--main-bg-color);
+}
+
+.active-account img {
+  background-color: transparent;
+  filter: invert(100%) sepia(5%) saturate(571%) hue-rotate(239deg)
+    brightness(116%) contrast(92%);
+}
+
+.active-account h2 {
+  color: var(--secondary-bg-color) !important;
+}
+
+#accounts-container {
+  grid-column: 2/3;
+  display: flex;
+  flex-direction: column;
+  margin: 25px;
+}
+
+#accounts-list {
+  max-width: 1240px;
+  max-height: 320px;
+  display: grid;
+  gap: 20px;
+  justify-items: center;
+  border-radius: 10px;
+}
+
+.account-card {
+  background-color: #2aa989ba;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  height: 150px;
+  border-radius: 10px;
+}
+
+.account-card:hover {
+  outline: 2px solid whitesmoke;
+  cursor: pointer;
+}
+
+.account-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+}
+
+.account-title h2 {
+  margin: 10px;
+  font-size: 25px;
+  background-color: transparent;
+}
+
+.account-card p,
+#divNewAccount h2 {
+  color: whitesmoke;
+  font-size: 22px;
+  line-height: 10px;
+  font-weight: 600;
+  background-color: transparent;
+}
+
+footer {
+  grid-row: 3/4;
+  border-top: 2px solid var(--secondary-bg-color);
+  padding: 0 25px;
+}
+
+@media (min-width: 900px) {
+  #accounts-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  #accounts-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

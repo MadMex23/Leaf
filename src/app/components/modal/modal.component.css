@@ -1,0 +1,188 @@
+/* The Modal (background) */
+.modal {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.75);
+  padding-top: 60px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  width: 45%;
+  height: 35%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  background-color: var(--main-bg-color);
+  font-family: "Inter", sans-serif;
+  margin: 5px auto;
+  border: 1px solid var(--secondary-bg-color);
+  border-radius: 5px;
+}
+
+.modal-content h1 {
+  color: var(--secondary-bg-color);
+  text-align: center;
+  margin: 0;
+  padding-bottom: 10px;
+  vertical-align: middle;
+  border-bottom: 2px solid var(--secondary-bg-color);
+}
+
+.container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.formInputs div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content input,
+.modal-content select {
+  box-sizing: border-box;
+  background: whitesmoke;
+  border-radius: 5px;
+  height: 35px;
+  font-size: 16px;
+  text-align: center;
+  color: var(--main-bg-color);
+  background-color: var(--main-bg-color);
+  color: var(--secondary-bg-color);
+  border: 1px solid var(--secondary-bg-color);
+  margin: 10px 0px;
+}
+
+.modal-content select {
+  width: 125px;
+}
+
+.modal-content input:hover,
+.modal-content select:hover,
+.modal-content input:focus,
+.modal-content select:focus {
+  outline: 2px solid var(--secondary-bg-color);
+}
+
+.modal-content input {
+  width: 250px;
+}
+
+.modal-content input::placeholder {
+  color: var(--secondary-bg-color);
+}
+
+#accountCurrencySign {
+  position: absolute;
+  margin-right: 220px;
+  color: var(--secondary-bg-color);
+}
+
+input[name="initialBalance"] {
+  padding: 0 25px;
+}
+
+.container button {
+  margin: 5px;
+  padding: 10px 20px;
+  background: #2aa989;
+  border-radius: 10px;
+  color: whitesmoke;
+  font-size: 16px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+}
+
+.accountBtns {
+  justify-content: center;
+}
+
+#submitAccount {
+  margin: 5px 25px;
+}
+
+#submitAccount:hover {
+  outline: 2px solid whitesmoke;
+}
+
+#submitAccount:active {
+  outline: 2px solid var(--secondary-bg-color);
+  background-color: var(--main-bg-color);
+  color: var(--secondary-bg-color);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+span {
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+}
+
+.error {
+  border: 2px solid var(--wrong) !important;
+}
+
+.error-msj {
+  color: var(--wrong);
+  font-size: 10px;
+  line-height: 0;
+}
+
+/* The Close Button */
+.close {
+  /* Position it in the top right corner outside of the modal */
+  /* position: absolute; */
+  display: flex;
+  justify-content: flex-end;
+  line-height: 0;
+  margin-right: 10px;
+  color: #000;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: red;
+  cursor: pointer;
+}
+
+/* Add Zoom Animation */
+.animate {
+  -webkit-animation: animatezoom 0.6s;
+  animation: animatezoom 0.6s;
+}
+
+@-webkit-keyframes animatezoom {
+  from {
+    -webkit-transform: scale(0);
+  }
+  to {
+    -webkit-transform: scale(1);
+  }
+}
+
+@keyframes animatezoom {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}

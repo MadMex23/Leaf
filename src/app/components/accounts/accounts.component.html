@@ -1,0 +1,63 @@
+<div id="accountTab">
+
+  <div id="totalNumbers">
+    <div>
+      <h2>Current Balance</h2>
+      <h2 id="currentBalance">{{accountData.currentBalance | currency}}</h2>
+    </div>
+    <div>
+      <h2>Total Deposits</h2>
+      <h2 id="totalDeposits">{{accountData.totalDeposits | currency}}</h2>
+    </div>
+    <div>
+      <h2>Total Expenses</h2>
+      <h2 id="totalExpenses">{{accountData.totalExpenses | currency}}</h2>
+    </div>
+    <div>
+      <h2>Total Transactions</h2>
+      <h2 id="totalTransactions">{{accountData.totalTransactions}}</h2>
+    </div>
+    <div id="accountSettings">
+      <button class="editAccount" (click)="showModal()"><img class="editBtn" src="./assets/Edit.png"
+          alt="Edit Button">Edit
+        Account</button>
+      <button class="deleteAccount" (click)="deleteAccount()"><img class="deleteBtn" src="./assets/Delete.png"
+          alt="Delete Button">Delete
+        Account</button>
+    </div>
+  </div>
+
+  <app-modal *ngIf="isModalOpen" [accountData]="accountInfo"></app-modal>
+
+  <app-transaction-form [accountId]="accountId"></app-transaction-form>
+
+  <div id="tableDiv">
+    <table class="scroll">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Edit/Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr id="{{transaction.id}}" *ngFor="let transaction of accountTransactions">
+          <td class="descriptionField" *ngIf="transaction">
+            <img class="{{transaction.type + 'Icon'}}" src="{{'./assets/' + transaction.type + '.png'}}"
+              alt="{{transaction.type + 'Icon'}}">
+            <p>{{transaction.description}}</p>
+          </td>
+
+          <td>{{transaction.date | date}}</td>
+          <td>{{transaction.amount | currency}}</td>
+          <td class="edit-delete">
+            <img class="editBtn" src="./assets/Edit.png" alt="Edit Button">
+            <img class="deleteBtn" src="./assets/Delete.png" alt="Delete Button" (click)="deleteTransaction($event)">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

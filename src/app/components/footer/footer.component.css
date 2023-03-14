@@ -1,0 +1,31 @@
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+#social {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#social p {
+  margin-right: 10px;
+}
+
+footer img {
+  background-color: transparent;
+  filter: invert(58%) sepia(9%) saturate(3048%) hue-rotate(115deg)
+    brightness(94%) contrast(78%);
+  width: 30px;
+  height: auto;
+  margin: 10px;
+}
+
+.footer-text {
+  font-family: "Inter", sans-serif;
+  font-style: italic;
+  color: whitesmoke;
+}

@@ -1,0 +1,59 @@
+<body>
+
+  <header>
+    <div id="div-logo">
+      <img id="logo" src="./assets/leaf-logo.png" alt="Leaf Logo" />
+    </div>
+    <div id="div-logout">
+      <h1 id="greetings"><strong>Hello,</strong> {{user}}!</h1>
+      <img id="log-out-btn" (click)="logOut()" src="./assets/Logout.png" alt="Logout Icon">
+    </div>
+  </header>
+
+  <main>
+
+    <div id="accounts-column">
+      <div id="div0" class="tabs active-account" (click)="changeTab(0)">
+        <img id="imgHome" src="./assets/Home.png" alt="Home" />
+        <h2>Home</h2>
+      </div>
+      <div id="{{'div' + account.id}}" class="tabs" *ngFor="let account of accountsList"
+        (click)="changeTab(account.id)">
+        <img id="{{'img' + account.type}}" src="{{'img' + account.type}}" src="{{'./assets/' + account.type + '.png'}}"
+          alt={{account.type}} />
+        <h2 class="account-name">{{account.name}}</h2>
+      </div>
+    </div>
+
+    <div id="accounts-container">
+
+      <div id="homeTab" *ngIf="!showAccount">
+        <app-carousel></app-carousel>
+        <div id="accounts-list">
+          <div id="{{account.id}}" class="home-account account-card" *ngFor="let account of accountsListModified"
+            (click)="changeTab(account.id)">
+            <div class="account-title">
+              <img id="{{'img' + account.type}}" src="{{'./assets/' + account.type + '.png'}}" alt="{{account.type}}" />
+              <h2 class="account-name">{{account.name}}</h2>
+            </div>
+            <p>{{account.currentBalance | currency }}</p>
+          </div>
+          <div id="divNewAccount" class="account-card" (click)="showModal()" *ngIf="accountsListModified.length < 6">
+            <img id="imgNewAccount" src="./assets/SumIcon.png" alt="New Account Icon">
+            <h2 class="account-name">Create New Account</h2>
+          </div>
+        </div>
+      </div>
+
+      <app-accounts *ngIf="showAccount" [accountId]="activeAccountId" [accountData]="activeAccountData"></app-accounts>
+
+      <app-modal *ngIf="isModalOpen && addAccountModal"></app-modal>
+
+    </div>
+  </main>
+
+  <footer>
+    <app-footer></app-footer>
+  </footer>
+
+</body>

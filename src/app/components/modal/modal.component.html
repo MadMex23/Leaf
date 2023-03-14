@@ -1,0 +1,70 @@
+<div id="newAccountModal" class="modal">
+
+  <form #newAccountForm="ngForm" class="modal-content animate">
+
+    <div class="modalHeader">
+      <span id="closeModal" class="close" title="Close Modal" (click)="closeModal()">&times;</span>
+      <h1 *ngIf="!accountData">Add New Account</h1>
+      <h1 *ngIf="accountData">Edit Account</h1>
+    </div>
+
+    <div class="container formInputs">
+
+      <div>
+        <input #name="ngModel" type="text" placeholder="Account Name" name="nameAccount" [(ngModel)]="newAccount.name"
+          required minlength="2" maxlength="15" [ngClass]="{'error': name.invalid && name.dirty && submitAccount}">
+        <span *ngIf="name.invalid && name.dirty && submitAccount">
+          <small name="nameAccount" class="error-msj" *ngIf="name.errors['required']">Name
+            must cannot be blank.</small>
+          <small name="nameAccount" class="error-msj" *ngIf="name.errors['minlength'] || name.errors['maxlength']">Name
+            must have between 2 and 15 characters.</small>
+        </span>
+      </div>
+
+      <div>
+        <select #type="ngModel" name="typeAccount" id="typeAccount" [(ngModel)]="newAccount.type"
+          [ngClass]="{'error': type.invalid && type.dirty && submitAccount}" required>
+          <option value="" hidden>Type</option>
+          <option value="Cash">Cash</option>
+          <option value="Bank">Bank</option>
+          <option value="Credit">Credit</option>
+          <option value="Transport">Transport</option>
+          <option value="Savings">Savings</option>
+        </select>
+        <span *ngIf="type.invalid && type.dirty && submitAccount">
+          <small name="typeAccount" class="error-msj" *ngIf="type.errors['required']">Select an account
+            type.
+          </small>
+        </span>
+      </div>
+
+      <div>
+        <div>
+          <span id="accountCurrencySign">$</span>
+          <input #initialBalance="ngModel" name="initialBalance" type="number" step=".01" placeholder="Initial Balance"
+            required min="0" max="9999999999" [(ngModel)]="newAccount.initialBalance"
+            [ngClass]="{'error': initialBalance.invalid && initialBalance.dirty && submitAccount}">
+          <span *ngIf="initialBalance.invalid && initialBalance.dirty && submitAccount">
+            <small name="initialBalance" class="error-msj" *ngIf="initialBalance.errors['required']">
+              Initial balance cannot be blank.
+            </small>
+            <small name="initialBalance" class="error-msj" *ngIf="initialBalance.errors['max']">
+              Initial balance cannot exceed 10 digits.
+            </small>
+            <small name="initialBalance" class="error-msj" *ngIf="initialBalance.errors['min']">
+              Initial balance cannot be negative.
+            </small>
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="container accountBtns">
+      <button id="submitAccount" *ngIf="!accountData" (click)="addAccount(newAccountForm)">Add Account</button>
+      <button id="submitAccount" *ngIf="accountData" (click)="editAccount(newAccountForm)">Edit Account</button>
+    </div>
+
+  </form>
+
+</div>

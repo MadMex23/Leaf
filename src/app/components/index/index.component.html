@@ -1,0 +1,39 @@
+<body>
+  <div id="divLogo">
+    <img id="logo" class="material-symbols-rounded" src="./assets/leaf-icon.png" alt="Leaf Logo" />
+  </div>
+  <main id="main">
+    <div id="welcome">
+      <h1>Welcome to Leaf!</h1>
+      <h2>Take control of your money, take control of your life.</h2>
+      <p>
+        Stop wondering where did all your money go, ask
+        <strong>Leaf</strong> instead!<br />With Leaf you can control every
+        expense and deposit in every paying method or savings account you
+        have. Goodbye spread sheets, hello <strong>Leaf</strong>! If you spent
+        it, <strong>Leaf</strong> it! If you earned it,
+        <strong>Leaf</strong> it!
+      </p>
+      <div id="inside-leaf">
+        <img src="./assets/leaf-snaps.png" alt="Leaf Images" />
+      </div>
+    </div>
+    <app-login *ngIf="!signUpForm"></app-login>
+    <app-signup *ngIf="signUpForm"></app-signup>
+  </main>
+  <div class="div-change-form">
+    <div class="change-form" *ngIf="!signUpForm">
+      <p>
+        You don't have an account? &nbsp;<strong id="changeToSignup" (click)="changeForm()">SIGN UP</strong>
+      </p>
+    </div>
+    <div class="change-form" *ngIf="signUpForm">
+      <p>
+        Already have an account? &nbsp;<strong id="changeToLogin" (click)="changeForm()">LOG IN</strong>
+      </p>
+    </div>
+  </div>
+  <footer>
+    <app-footer></app-footer>
+  </footer>
+</body>

@@ -1,1 +1,14 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  --main-bg-color: #232931;
+  --secondary-bg-color: #2aa98a;
+  --delete-color: #ff5c5c;
+  --wrong: #ff0000;
+}
+
+body {
+  margin: 0;
+}
+
+.swal2-popup {
+  font-family: "Inter", sans-serif !important;
+}
