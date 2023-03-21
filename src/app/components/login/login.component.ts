@@ -5,7 +5,10 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Account } from 'src/app/models/account';
 import { User } from 'src/app/models/user';
+import { UsersService } from 'src/app/services/users.service';
 
 @Component({
   selector: 'app-login',
@@ -18,8 +21,14 @@ export class LoginComponent implements OnInit {
   emailError: string;
   passwordError: string;
   showPassword: boolean = false;
+  showErrors: boolean = false;
+  accountsList: Array<Account> = [];
 
-  constructor(formBuilder: FormBuilder) {
+  constructor(
+    formBuilder: FormBuilder,
+    private userService: UsersService,
+    private router: Router
+  ) {
     this.loginValues = formBuilder.group({
       email: ['', Validators.compose([Validators.required, Validators.email])],
       password: ['', Validators.compose([Validators.required])],
@@ -63,12 +72,23 @@ export class LoginComponent implements OnInit {
   submitLogin(): void {
     this.isEmailValid(this.loginValues.controls['email'].errors);
     this.isPasswordValid(this.loginValues.controls['password'].errors);
+    this.showErrors = true;
 
     if (!this.loginValues.invalid) {
+      this.showErrors = false;
       this.user.email = this.loginValues.value.email;
       this.user.password = this.loginValues.value.password;
-      console.log('Adentro', this.user);
-      this.loginValues.reset();
+      this.userService.loginUser(this.user).subscribe((response) => {
+        if (response.success) {
+          localStorage.setItem(
+            'user',
+            response.data.name + ' ' + response.data.lastName
+          );
+          localStorage.setItem('userId', response.data.id);
+          this.userService.setAccounts(response.data.accounts);
+          this.router.navigate(['/', 'home']);
+        }
+      });
     }
   }
 }

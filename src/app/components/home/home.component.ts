@@ -4,6 +4,7 @@ import { Account } from 'src/app/models/account';
 import { Transaction } from 'src/app/models/transaction';
 import { AccountsService } from 'src/app/services/accounts.service';
 import { TransactionsService } from 'src/app/services/transactions.service';
+import { UsersService } from 'src/app/services/users.service';
 import Swal from 'sweetalert2';
 import { ModalService } from '../modal/modal.service';
 
@@ -13,7 +14,7 @@ import { ModalService } from '../modal/modal.service';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  user: string = localStorage.getItem('userName');
+  user: string = localStorage.getItem('user');
   accountsList: Array<Account> = [];
   showAccount: boolean = false;
   homeAccountsDiv: any = document.getElementById('accounts-list');
@@ -23,20 +24,24 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private modalService: ModalService,
-    private accounts: AccountsService,
+    private userService: UsersService,
     private transactions: TransactionsService,
+    private aService: AccountsService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.accounts.getAccountsByUser().subscribe(
-      (response) => (
-        (this.accountsList = response),
-        (this.accountsListModified = this.accountsList),
-        this.calculateCurrentBalance()
-      ),
-      (error) => console.log(error)
-    );
+    if (this.accounts.length) {
+      this.accountsList = this.accounts;
+      this.accountsListModified = this.accounts;
+      this.calculateCurrentBalance();
+    } else {
+      this.aService.getAccountsByUser().subscribe((response) => {
+        this.accountsList = response.data;
+        this.accountsListModified = response.data;
+        this.calculateCurrentBalance();
+      });
+    }
   }
 
   logOut(): void {
@@ -53,8 +58,7 @@ export class HomeComponent implements OnInit {
       confirmButtonText: 'Confirm',
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem('userId');
-        localStorage.removeItem('userName');
+        localStorage.removeItem('user');
         this.router.navigate(['/']);
       }
     });
@@ -66,6 +70,10 @@ export class HomeComponent implements OnInit {
 
   get addAccountModal(): boolean {
     return this.modalService.addAccountModal;
+  }
+
+  get accounts(): Array<Account> {
+    return this.userService.accountsList;
   }
 
   showModal(): void {
@@ -82,7 +90,7 @@ export class HomeComponent implements OnInit {
 
       this.transactions.getTransactionsByAccount(account.id).subscribe(
         (response) => {
-          response?.forEach((transaction) => {
+          response.data?.forEach((transaction: Transaction) => {
             if (transaction.type === 'Deposit') {
               totalDeposits += transaction.amount;
               currentBalance += transaction.amount;

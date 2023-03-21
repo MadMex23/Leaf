@@ -117,6 +117,8 @@ export class TransactionFormComponent implements OnInit {
       if (errors['required']) {
         this.dateError = 'You must select a date.';
       }
+    } else if (new Date(this.transactionValues.value.date) > new Date()) {
+      this.dateError = 'Date cannot be in the future.';
     } else {
       this.dateError = '';
       valid = true;
@@ -145,7 +147,7 @@ export class TransactionFormComponent implements OnInit {
     return valid;
   }
 
-  showErrors(): void {
+  showErrors() {
     this.isTypeValid(this.transactionValues.controls['type'].errors);
     this.isDescriptionValid(
       this.transactionValues.controls['description'].errors
@@ -156,22 +158,24 @@ export class TransactionFormComponent implements OnInit {
 
   addTransaction(): void {
     this.showErrors();
-    if (!this.transactionValues.invalid) {
-      this.transaction.userId = this.userId;
+    if (
+      !this.transactionValues.invalid &&
+      this.isDateValid(this.transactionValues.controls['date'].errors)
+    ) {
       this.transaction.accountId = this.accountId;
       this.transaction.type = this.transactionValues.value.type;
       this.transaction.description = this.transactionValues.value.description;
       this.transaction.amount = this.transactionValues.value.amount;
       this.transaction.date = this.transactionValues.value.date;
+
       this.service.addTransaction(this.transaction).subscribe((response) => {
-        console.log(response);
-      });
-      this.transactionValues.reset({ type: '' });
-      this.account.ngOnInit();
-      this.home.calculateCurrentBalance();
-      this.toast.fire({
-        icon: 'success',
-        title: 'Transaction registered.',
+        this.transactionValues.reset({ type: '' });
+        this.account.ngOnInit();
+        this.home.calculateCurrentBalance();
+        this.toast.fire({
+          icon: 'success',
+          title: response.message,
+        });
       });
     }
   }

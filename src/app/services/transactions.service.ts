@@ -11,7 +11,7 @@ import { Transaction } from '../models/transaction';
   providedIn: 'root',
 })
 export class TransactionsService {
-  _urlTransactions: string = 'http://localhost:3000/transactions';
+  _urlTransactions: string = 'http://localhost:8080/transactions';
   _transactionsList: Array<Transaction> = [];
   constructor(private http: HttpClient) {}
 
@@ -29,41 +29,30 @@ export class TransactionsService {
     } else {
       console.log('Back Error: ' + error.error.message + error.error.status);
     }
-    return throwError('Comunication Error');
+    return throwError(() => 'Comunication Error');
   }
 
-  getTransactionsByAccount(accountId: number): Observable<Array<Transaction>> {
-    return this.http
-      .get<Array<Transaction>>(
-        this._urlTransactions + '?accountId=' + accountId
-      )
-      .pipe(catchError(this.handlerException));
+  getTransactionsByAccount(accountId: number): Observable<any> {
+    return this.http.get(
+      this._urlTransactions + '/account?accountId=' + accountId,
+      this.getHttpOptions()
+    );
   }
 
-  addTransaction(transaction: Transaction): Observable<Transaction> {
+  addTransaction(transaction: Transaction): Observable<any> {
     return this.http
       .post<Transaction>(
-        this._urlTransactions,
+        this._urlTransactions + '/add',
         transaction,
         this.getHttpOptions()
       )
       .pipe(catchError(this.handlerException));
   }
 
-  updateTransaction(
-    id: number,
-    transaction: Transaction
-  ): Observable<Transaction> {
-    return this.http
-      .put<Transaction>(
-        `${this._urlTransactions}/${id}`,
-        transaction,
-        this.getHttpOptions()
-      )
-      .pipe(catchError(this.handlerException));
-  }
-
-  deleteTransaction(id: number) {
-    return this.http.delete(`${this._urlTransactions}/${id}`);
+  deleteTransaction(id: number): Observable<any> {
+    return this.http.delete(
+      `${this._urlTransactions}/${id}`,
+      this.getHttpOptions()
+    );
   }
 }

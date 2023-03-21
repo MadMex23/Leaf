@@ -46,12 +46,13 @@ export class AccountsComponent implements OnInit {
 
   ngOnInit(): void {
     this.account.getAccountById(this.accountId).subscribe((response) => {
-      (this.activeAccount = response), (error) => console.log(error);
+      (this.activeAccount = response.data), (error) => console.log(error);
     });
     this.transactions
       .getTransactionsByAccount(this.accountId)
       .subscribe((response) => {
-        (this.accountTransactions = response), (error) => console.log(error);
+        (this.accountTransactions = response.data),
+          (error) => console.log(error);
       });
   }
 

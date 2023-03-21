@@ -4,11 +4,9 @@ import { IndexComponent } from './components/index/index.component';
 import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: localStorage.getItem('email') ? HomeComponent : IndexComponent,
-  },
+  { path: '', component: IndexComponent },
   { path: 'home', component: HomeComponent },
+  { path: '**', redirectTo: localStorage.getItem('user') ? 'home' : '' },
 ];
 
 @NgModule({
