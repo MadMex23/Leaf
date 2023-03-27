@@ -4,7 +4,7 @@ import {
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 import { User } from '../models/user';
 import Swal from 'sweetalert2';
 import { Account } from '../models/account';
@@ -26,6 +26,15 @@ export class UsersService {
     };
   }
 
+  private getDeleteHttpOptions(user: User) {
+    return {
+      headers: new HttpHeaders({
+        'content-type': 'application/json',
+      }),
+      body: user,
+    };
+  }
+
   private handlerException(error: HttpErrorResponse) {
     let toast = Swal.mixin({
       toast: true,
@@ -44,6 +53,7 @@ export class UsersService {
         title: error.error.message,
       });
     } else {
+      console.log(error);
       console.log('Back Error: ' + error.status + ' - ' + error.error.message);
       return toast.fire({
         icon: 'error',
@@ -70,5 +80,14 @@ export class UsersService {
 
   get accountsList(): Array<Account> {
     return this._accountsList;
+  }
+
+  deleteUser(userId: number, user: User): Observable<any> {
+    return this.http
+      .delete<User>(
+        this._usersURL + `/${userId}`,
+        this.getDeleteHttpOptions(user)
+      )
+      .pipe(catchError(this.handlerException));
   }
 }

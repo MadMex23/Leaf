@@ -12,7 +12,6 @@ import Swal from 'sweetalert2';
   providedIn: 'root',
 })
 export class AccountsService {
-  _userId: string = localStorage.getItem('userId');
   _urlAccounts: string = 'http://localhost:8080/accounts';
   _accountsList: Array<Account> = [];
   constructor(private http: HttpClient) {}
@@ -51,9 +50,9 @@ export class AccountsService {
     }
   }
 
-  getAccountsByUser(): Observable<any> {
+  getAccountsByUser(userId: number): Observable<any> {
     return this.http.get(
-      this._urlAccounts + '/user?userId=' + Number(this._userId),
+      this._urlAccounts + '/user?userId=' + Number(userId),
       this.getHttpOptions()
     );
   }
@@ -63,11 +62,9 @@ export class AccountsService {
   }
 
   addAccount(account: Account): Observable<any> {
-    return this.http.post<Account>(
-      this._urlAccounts + '/add',
-      account,
-      this.getHttpOptions()
-    );
+    return this.http
+      .post<Account>(this._urlAccounts + '/add', account, this.getHttpOptions())
+      .pipe(catchError(this.handlerException));
   }
 
   updateAccount(id: number, account: Account): Observable<any> {

@@ -6,8 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Account } from 'src/app/models/account';
 import { User } from 'src/app/models/user';
+import { CryptoService } from 'src/app/services/crypto.service';
 import { UsersService } from 'src/app/services/users.service';
 
 @Component({
@@ -21,13 +21,16 @@ export class LoginComponent implements OnInit {
   emailError: string;
   passwordError: string;
   showPassword: boolean = false;
-  showErrors: boolean = false;
-  accountsList: Array<Account> = [];
+  displayError: Object = {
+    email: false,
+    password: false,
+  };
 
   constructor(
     formBuilder: FormBuilder,
     private userService: UsersService,
-    private router: Router
+    private router: Router,
+    private cryptoService: CryptoService
   ) {
     this.loginValues = formBuilder.group({
       email: ['', Validators.compose([Validators.required, Validators.email])],
@@ -70,23 +73,23 @@ export class LoginComponent implements OnInit {
   }
 
   submitLogin(): void {
+    Object.keys(this.displayError).forEach(
+      (v) => (this.displayError[v] = true)
+    );
     this.isEmailValid(this.loginValues.controls['email'].errors);
     this.isPasswordValid(this.loginValues.controls['password'].errors);
-    this.showErrors = true;
 
     if (!this.loginValues.invalid) {
-      this.showErrors = false;
       this.user.email = this.loginValues.value.email;
       this.user.password = this.loginValues.value.password;
       this.userService.loginUser(this.user).subscribe((response) => {
         if (response.success) {
-          localStorage.setItem(
-            'user',
-            response.data.name + ' ' + response.data.lastName
-          );
-          localStorage.setItem('userId', response.data.id);
-          this.userService.setAccounts(response.data.accounts);
+          this.cryptoService.set({
+            userId: response.data.id,
+            userName: response.data.name + ' ' + response.data.lastName,
+          });
           this.router.navigate(['/', 'home']);
+          window.location.reload();
         }
       });
     }

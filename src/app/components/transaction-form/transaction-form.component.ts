@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Transaction } from 'src/app/models/transaction';
+import { CryptoService } from 'src/app/services/crypto.service';
 import { TransactionsService } from 'src/app/services/transactions.service';
 import Swal from 'sweetalert2';
 import { AccountsComponent } from '../accounts/accounts.component';
@@ -13,7 +14,7 @@ import { HomeComponent } from '../home/home.component';
 })
 export class TransactionFormComponent implements OnInit {
   @Input() accountId: number;
-  userId: number = Number(localStorage.getItem('userId'));
+  userId: number = Number(this.cryptoService.get().userId);
   transaction: Transaction = new Transaction();
   transactionValues: FormGroup;
   minDescriptionChars: number = 2;
@@ -23,6 +24,12 @@ export class TransactionFormComponent implements OnInit {
   dateError: string;
   amountError: string;
   maxAmount: number = 9999999999;
+  displayError: Object = {
+    type: false,
+    description: false,
+    date: false,
+    amount: false,
+  };
   toast = Swal.mixin({
     toast: true,
     position: 'bottom-end',
@@ -38,6 +45,7 @@ export class TransactionFormComponent implements OnInit {
     private service: TransactionsService,
     private account: AccountsComponent,
     private home: HomeComponent,
+    private cryptoService: CryptoService,
     formBuilder: FormBuilder
   ) {
     this.transactionValues = formBuilder.group({
@@ -148,6 +156,9 @@ export class TransactionFormComponent implements OnInit {
   }
 
   showErrors() {
+    Object.keys(this.displayError).forEach(
+      (v) => (this.displayError[v] = true)
+    );
     this.isTypeValid(this.transactionValues.controls['type'].errors);
     this.isDescriptionValid(
       this.transactionValues.controls['description'].errors

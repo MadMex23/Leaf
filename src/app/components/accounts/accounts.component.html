@@ -52,7 +52,6 @@
           <td>{{transaction.date | date:'EEE d MMM y'}}</td>
           <td>{{transaction.amount | currency}}</td>
           <td class="edit-delete">
-            <!-- <img class="editBtn" src="./assets/Edit.png" alt="Edit Button"> -->
             <img class="deleteBtn" src="./assets/Delete.png" alt="Delete Button" (click)="deleteTransaction($event)">
           </td>
         </tr>

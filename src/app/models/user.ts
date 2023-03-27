@@ -4,8 +4,8 @@ export class User {
   id: number | null;
   name: string | null;
   lastName: string | null;
-  email: string;
-  password: string;
-  accounts: Array<Account>;
+  email: string | null;
+  password: string | null;
+  accounts: Array<Account> | null;
   constructor() {}
 }

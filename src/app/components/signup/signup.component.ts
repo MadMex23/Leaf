@@ -26,6 +26,13 @@ export class SignupComponent implements OnInit {
   rePasswordError: string;
   showPassword: boolean = false;
   showRePassword: boolean = false;
+  displayError: Object = {
+    name: false,
+    lastName: false,
+    email: false,
+    password: false,
+    repassword: false,
+  };
   toast = Swal.mixin({
     toast: true,
     position: 'bottom-end',
@@ -174,6 +181,9 @@ export class SignupComponent implements OnInit {
   }
 
   showErrors(): void {
+    Object.keys(this.displayError).forEach(
+      (v) => (this.displayError[v] = true)
+    );
     this.isNameValid(this.signupValues.controls['name'].errors);
     this.isLastNameValid(this.signupValues.controls['last_name'].errors);
     this.isEmailValid(this.signupValues.controls['email'].errors);
