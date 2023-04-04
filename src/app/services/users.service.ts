@@ -4,14 +4,18 @@ import {
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 import { User } from '../models/user';
+import Swal from 'sweetalert2';
+import { Account } from '../models/account';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService {
-  usersURL: string = 'http://localhost:3030/users';
+  _usersURL: string = 'http://localhost:8080/users';
+  private _accountsList: Array<Account> = new Array();
+
   constructor(private http: HttpClient) {}
 
   private getHttpOptions() {
@@ -22,30 +26,68 @@ export class UsersService {
     };
   }
 
-  private handlerException(error: HttpErrorResponse) {
-    if (error.error instanceof ErrorEvent) {
-      console.log('Front Error: ' + error.error.message);
-    } else {
-      console.log('Back Error: ' + error.error.message + error.error.status);
-    }
-    return throwError('Comunication Error');
+  private getDeleteHttpOptions(user: User) {
+    return {
+      headers: new HttpHeaders({
+        'content-type': 'application/json',
+      }),
+      body: user,
+    };
   }
 
-  // loginUser(user: User): Observable<User> {
-  //   return this.http
-  //     .post<User>(this.usersURL, user, this.getHttpOptions())
-  //     .pipe(catchError(this.handlerException));
-  // }
+  private handlerException(error: HttpErrorResponse) {
+    let toast = Swal.mixin({
+      toast: true,
+      position: 'bottom-end',
+      color: '#232931',
+      iconColor: '#232931',
+      background: '#ff5c5c',
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: false,
+    });
+    if (error.error instanceof ErrorEvent) {
+      console.log('Front Error: ' + error.status + ' - ' + error.error.message);
+      return toast.fire({
+        icon: 'error',
+        title: error.error.message,
+      });
+    } else {
+      console.log(error);
+      console.log('Back Error: ' + error.status + ' - ' + error.error.message);
+      return toast.fire({
+        icon: 'error',
+        title: error.error.message,
+      });
+    }
+  }
 
-  loginUser(user: User): Observable<User> {
+  loginUser(user: User): Observable<any> {
     return this.http
-      .get<User>(this.usersURL + '?email=' + user.email)
+      .post<User>(this._usersURL + '/login', user, this.getHttpOptions())
       .pipe(catchError(this.handlerException));
   }
 
-  signupUser(user: User): Observable<User> {
+  signupUser(user: User): Observable<any> {
     return this.http
-      .post<User>(this.usersURL, user, this.getHttpOptions())
+      .post<User>(this._usersURL + '/signup', user, this.getHttpOptions())
+      .pipe(catchError(this.handlerException));
+  }
+
+  setAccounts(list: Array<Account>): void {
+    this._accountsList = list;
+  }
+
+  get accountsList(): Array<Account> {
+    return this._accountsList;
+  }
+
+  deleteUser(userId: number, user: User): Observable<any> {
+    return this.http
+      .delete<User>(
+        this._usersURL + `/${userId}`,
+        this.getDeleteHttpOptions(user)
+      )
       .pipe(catchError(this.handlerException));
   }
 }

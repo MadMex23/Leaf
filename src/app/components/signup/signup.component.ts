@@ -26,6 +26,13 @@ export class SignupComponent implements OnInit {
   rePasswordError: string;
   showPassword: boolean = false;
   showRePassword: boolean = false;
+  displayError: Object = {
+    name: false,
+    lastName: false,
+    email: false,
+    password: false,
+    repassword: false,
+  };
   toast = Swal.mixin({
     toast: true,
     position: 'bottom-end',
@@ -174,6 +181,9 @@ export class SignupComponent implements OnInit {
   }
 
   showErrors(): void {
+    Object.keys(this.displayError).forEach(
+      (v) => (this.displayError[v] = true)
+    );
     this.isNameValid(this.signupValues.controls['name'].errors);
     this.isLastNameValid(this.signupValues.controls['last_name'].errors);
     this.isEmailValid(this.signupValues.controls['email'].errors);
@@ -188,16 +198,17 @@ export class SignupComponent implements OnInit {
       this.isRePasswordValid(this.signupValues.controls['repassword'].errors)
     ) {
       this.newUser.name = this.signupValues.value.name;
-      this.newUser.last_name = this.signupValues.value.last_name;
+      this.newUser.lastName = this.signupValues.value.last_name;
       this.newUser.email = this.signupValues.value.email;
       this.newUser.password = this.signupValues.value.password;
-      this.user
-        .signupUser(this.newUser)
-        .subscribe((response) => console.log(response));
-      this.index.changeForm();
-      this.toast.fire({
-        icon: 'success',
-        title: 'User registered.',
+      this.user.signupUser(this.newUser).subscribe((response) => {
+        if (response.success) {
+          this.toast.fire({
+            icon: 'success',
+            title: response.message,
+          });
+          this.index.changeForm();
+        }
       });
     }
   }

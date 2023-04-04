@@ -5,7 +5,10 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
+import { CryptoService } from 'src/app/services/crypto.service';
+import { UsersService } from 'src/app/services/users.service';
 
 @Component({
   selector: 'app-login',
@@ -18,8 +21,17 @@ export class LoginComponent implements OnInit {
   emailError: string;
   passwordError: string;
   showPassword: boolean = false;
+  displayError: Object = {
+    email: false,
+    password: false,
+  };
 
-  constructor(formBuilder: FormBuilder) {
+  constructor(
+    formBuilder: FormBuilder,
+    private userService: UsersService,
+    private router: Router,
+    private cryptoService: CryptoService
+  ) {
     this.loginValues = formBuilder.group({
       email: ['', Validators.compose([Validators.required, Validators.email])],
       password: ['', Validators.compose([Validators.required])],
@@ -61,14 +73,25 @@ export class LoginComponent implements OnInit {
   }
 
   submitLogin(): void {
+    Object.keys(this.displayError).forEach(
+      (v) => (this.displayError[v] = true)
+    );
     this.isEmailValid(this.loginValues.controls['email'].errors);
     this.isPasswordValid(this.loginValues.controls['password'].errors);
 
     if (!this.loginValues.invalid) {
       this.user.email = this.loginValues.value.email;
       this.user.password = this.loginValues.value.password;
-      console.log('Adentro', this.user);
-      this.loginValues.reset();
+      this.userService.loginUser(this.user).subscribe((response) => {
+        if (response.success) {
+          this.cryptoService.set({
+            userId: response.data.id,
+            userName: response.data.name + ' ' + response.data.lastName,
+          });
+          this.router.navigate(['/', 'home']);
+          window.location.reload();
+        }
+      });
     }
   }
 }

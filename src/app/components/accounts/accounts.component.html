@@ -38,7 +38,7 @@
           <th>Description</th>
           <th>Date</th>
           <th>Amount</th>
-          <th>Edit/Delete</th>
+          <th>Delete</th>
         </tr>
       </thead>
       <tbody>
@@ -49,10 +49,9 @@
             <p>{{transaction.description}}</p>
           </td>
 
-          <td>{{transaction.date | date}}</td>
+          <td>{{transaction.date | date:'EEE d MMM y'}}</td>
           <td>{{transaction.amount | currency}}</td>
           <td class="edit-delete">
-            <img class="editBtn" src="./assets/Edit.png" alt="Edit Button">
             <img class="deleteBtn" src="./assets/Delete.png" alt="Delete Button" (click)="deleteTransaction($event)">
           </td>
         </tr>

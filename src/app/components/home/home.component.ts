@@ -1,9 +1,12 @@
-import { Component, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Account } from 'src/app/models/account';
 import { Transaction } from 'src/app/models/transaction';
+import { User } from 'src/app/models/user';
 import { AccountsService } from 'src/app/services/accounts.service';
+import { CryptoService } from 'src/app/services/crypto.service';
 import { TransactionsService } from 'src/app/services/transactions.service';
+import { UsersService } from 'src/app/services/users.service';
 import Swal from 'sweetalert2';
 import { ModalService } from '../modal/modal.service';
 
@@ -13,30 +16,32 @@ import { ModalService } from '../modal/modal.service';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  user: string = localStorage.getItem('userName');
-  accountsList: Array<Account> = [];
-  showAccount: boolean = false;
+  user: string = this.cryptoService.get().userName;
+  userId: string = this.cryptoService.get().userId;
   homeAccountsDiv: any = document.getElementById('accounts-list');
+  showAccount: boolean = false;
   activeAccountId: number;
   activeAccountData: any;
+  accountsList: Array<Account> = [];
   accountsListModified: Array<any> = [];
 
   constructor(
     private modalService: ModalService,
-    private accounts: AccountsService,
+    private userService: UsersService,
     private transactions: TransactionsService,
-    private router: Router
+    private aService: AccountsService,
+    private router: Router,
+    private cryptoService: CryptoService
   ) {}
 
-  ngOnInit(): void {
-    this.accounts.getAccountsByUser().subscribe(
-      (response) => (
-        (this.accountsList = response),
-        (this.accountsListModified = this.accountsList),
-        this.calculateCurrentBalance()
-      ),
-      (error) => console.log(error)
-    );
+  ngOnInit() {
+    this.aService
+      .getAccountsByUser(Number(this.userId))
+      .subscribe((response) => {
+        this.accountsList = response.data;
+        this.accountsListModified = response.data;
+        this.calculateCurrentBalance();
+      });
   }
 
   logOut(): void {
@@ -53,8 +58,7 @@ export class HomeComponent implements OnInit {
       confirmButtonText: 'Confirm',
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem('userId');
-        localStorage.removeItem('userName');
+        localStorage.removeItem('user');
         this.router.navigate(['/']);
       }
     });
@@ -66,6 +70,10 @@ export class HomeComponent implements OnInit {
 
   get addAccountModal(): boolean {
     return this.modalService.addAccountModal;
+  }
+
+  get accounts(): Array<Account> {
+    return this.userService.accountsList;
   }
 
   showModal(): void {
@@ -82,7 +90,7 @@ export class HomeComponent implements OnInit {
 
       this.transactions.getTransactionsByAccount(account.id).subscribe(
         (response) => {
-          response?.forEach((transaction) => {
+          response.data?.forEach((transaction: Transaction) => {
             if (transaction.type === 'Deposit') {
               totalDeposits += transaction.amount;
               currentBalance += transaction.amount;
@@ -119,6 +127,53 @@ export class HomeComponent implements OnInit {
       this.showAccount = false;
     } else {
       this.showAccount = true;
+    }
+  }
+
+  async deleteUser() {
+    const { value: password } = await Swal.fire({
+      title: 'Confirmation',
+      text: 'Are you sure you want to delete your Leaf account and everything inside it? Please insert your password to confirm.',
+      input: 'password',
+      inputPlaceholder: 'Enter your password',
+      icon: 'warning',
+      color: '#2aa98a',
+      iconColor: '#d33',
+      background: '#232931',
+      showCancelButton: true,
+      confirmButtonColor: '#2aa98a',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Confirm',
+    });
+
+    if (password) {
+      let user: User = new User();
+      let toast = Swal.mixin({
+        toast: true,
+        position: 'bottom-end',
+        color: '#232931',
+        iconColor: '#232931',
+        background: '#ff5c5c',
+        showConfirmButton: false,
+        timer: 1000,
+        timerProgressBar: false,
+      });
+      user.password = password;
+      this.userService
+        .deleteUser(Number(this.cryptoService.get().userId), user)
+        .subscribe((response) => {
+          if (response.success) {
+            toast
+              .fire({
+                icon: 'warning',
+                title: response.message,
+              })
+              .then(() => {
+                localStorage.removeItem('user');
+                this.router.navigate(['/']);
+              });
+          }
+        });
     }
   }
 }

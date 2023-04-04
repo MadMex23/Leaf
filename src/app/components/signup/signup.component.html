@@ -1,31 +1,33 @@
 <div class="div-form">
   <h1>Sign Up</h1>
   <form [formGroup]="signupValues" id="signupForm" class="form">
-    <input formControlName="name" type="text" placeholder="NAME" [ngClass]="{'error': nameError}"
-      (ngModelChange)="isNameValid(signupValues.controls['name'].errors)" />
-    <small name="name" class="error-msj">{{nameError}}</small>
-    <input formControlName="last_name" type="text" placeholder="LAST NAME" [ngClass]="{'error': lastNameError}"
-      (ngModelChange)="isLastNameValid(signupValues.controls['last_name'].errors)" />
-    <small name="last_name" class="error-msj">{{lastNameError}}</small>
-    <input formControlName="email" type="text" placeholder="EMAIL" [ngClass]="{'error': emailError}"
-      (ngModelChange)="isEmailValid(signupValues.controls['email'].errors)" />
-    <small name="email" class="error-msj">{{emailError}}</small>
+    <input formControlName="name" type="text" placeholder="NAME"
+      [ngClass]="{'error': nameError && displayError['name']}" (focus)="displayError['name'] = false" />
+    <small name="name" class="error-msj" [ngClass]="{'show-error': !displayError['name']}">{{nameError}}</small>
+    <input formControlName="last_name" type="text" placeholder="LAST NAME"
+      [ngClass]="{'error': lastNameError && displayError['lastName']}" (focus)="displayError['lastName'] = false" />
+    <small name="last_name" class="error-msj"
+      [ngClass]="{'show-error': !displayError['lastName']}">{{lastNameError}}</small>
+    <input formControlName="email" type="text" placeholder="EMAIL"
+      [ngClass]="{'error': emailError && displayError['email']}" (focus)="displayError['email'] = false" />
+    <small name="email" class="error-msj" [ngClass]="{'show-error': !displayError['email']}">{{emailError}}</small>
     <i id="signup-password-eye" name="password" (click)="changePasswordType()">
       <img src="./assets/eye-close.png" alt="Hide Password" *ngIf="!showPassword">
       <img src="./assets/eye-open.png" alt="Show Password" *ngIf="showPassword">
     </i>
     <input formControlName="password" type="{{showPassword ? 'text' : 'password'}}" placeholder="PASSWORD"
-      [ngClass]="{'error': passwordError}"
-      (ngModelChange)="isPasswordValid(signupValues.controls['password'].errors)" />
-    <small name="password" class="error-msj">{{passwordError}}</small>
+      [ngClass]="{'error': passwordError && displayError['password']}" (focus)="displayError['password'] = false" />
+    <small name="password" class="error-msj"
+      [ngClass]="{'show-error': !displayError['password']}">{{passwordError}}</small>
     <i id="signup-repassword-eye" name="repassword" (click)="changeRePasswordType()">
       <img src="./assets/eye-close.png" alt="Hide Password" *ngIf="!showRePassword">
       <img src="./assets/eye-open.png" alt="Show Password" *ngIf="showRePassword">
     </i>
     <input formControlName="repassword" type="{{showRePassword ? 'text' : 'password'}}"
-      [ngClass]="{'error': rePasswordError}" placeholder="REPEAT PASSWORD"
-      (ngModelChange)="isRePasswordValid(signupValues.controls['repassword'].errors)" />
-    <small name="repassword" class="error-msj">{{rePasswordError}}</small>
+      [ngClass]="{'error': rePasswordError && displayError['repassword']}" placeholder="REPEAT PASSWORD"
+      (focus)="displayError['repassword'] = false" />
+    <small name="repassword" class="error-msj"
+      [ngClass]="{'show-error': !displayError['repassword']}">{{rePasswordError}}</small>
     <button id="signupBtn" class="form-button" (click)="submitSignup()">SIGN UP</button>
   </form>
 </div>

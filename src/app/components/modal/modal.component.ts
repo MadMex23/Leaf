@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Account } from 'src/app/models/account';
 import { AccountsService } from 'src/app/services/accounts.service';
+import { CryptoService } from 'src/app/services/crypto.service';
 import Swal from 'sweetalert2';
 import { AccountsComponent } from '../accounts/accounts.component';
 import { HomeComponent } from '../home/home.component';
@@ -16,7 +17,11 @@ import { ModalService } from './modal.service';
 export class ModalComponent implements OnInit {
   @Input() accountData: any;
   newAccount: Account = new Account();
-  submitAccount: boolean = false;
+  displayError: Object = {
+    name: false,
+    type: false,
+    initialBalance: false,
+  };
   toast = Swal.mixin({
     toast: true,
     position: 'bottom-end',
@@ -24,14 +29,13 @@ export class ModalComponent implements OnInit {
     iconColor: '#232931',
     background: '#2aa98a',
     showConfirmButton: false,
-    timer: 1500,
+    timer: 1000,
     timerProgressBar: true,
   });
   constructor(
     private modalService: ModalService,
     private account: AccountsService,
-    private accountComponent: AccountsComponent,
-    private home: HomeComponent
+    private cryptoService: CryptoService
   ) {}
 
   ngOnInit(): void {
@@ -41,7 +45,7 @@ export class ModalComponent implements OnInit {
       this.newAccount.type = this.accountData.type;
       this.newAccount.initialBalance = this.accountData.initialBalance;
     } else {
-      this.newAccount.userId = Number(localStorage.getItem('userId'));
+      this.newAccount.userId = Number(this.cryptoService.get().userId);
       this.newAccount.type = '';
     }
     window.onclick = (event: any) => {
@@ -58,27 +62,34 @@ export class ModalComponent implements OnInit {
   }
 
   addAccount(newAccountForm: NgForm) {
-    this.submitAccount = true;
+    Object.keys(this.displayError).forEach(
+      (v) => (this.displayError[v] = true)
+    );
     if (newAccountForm.invalid) {
       for (const control of Object.keys(newAccountForm.controls)) {
         newAccountForm.controls[control].markAsDirty();
       }
       return;
     } else {
-      this.account
-        .addAccount(this.newAccount)
-        .subscribe((response) => console.log(response));
-      this.toast.fire({
-        icon: 'success',
-        title: 'New account added.',
+      this.account.addAccount(this.newAccount).subscribe((response) => {
+        if (response.success) {
+          this.toast
+            .fire({
+              icon: 'success',
+              title: response.message,
+            })
+            .then(() => {
+              window.location.reload();
+            });
+        }
       });
-      this.closeModal();
-      window.location.reload();
     }
   }
 
   editAccount(newAccountForm: NgForm) {
-    this.submitAccount = true;
+    Object.keys(this.displayError).forEach(
+      (v) => (this.displayError[v] = true)
+    );
     if (newAccountForm.invalid) {
       for (const control of Object.keys(newAccountForm.controls)) {
         newAccountForm.controls[control].markAsDirty();
@@ -87,15 +98,16 @@ export class ModalComponent implements OnInit {
     } else {
       this.account
         .updateAccount(this.accountData.id, this.newAccount)
-        .subscribe(
-          (response) => console.log(response),
-          (error) => console.log(error)
-        );
-      this.toast.fire({
-        icon: 'success',
-        title: 'Account updated.',
-      });
-      window.location.reload();
+        .subscribe((response) => {
+          this.toast
+            .fire({
+              icon: 'success',
+              title: response.message,
+            })
+            .then(() => {
+              window.location.reload();
+            });
+        });
     }
   }
 }

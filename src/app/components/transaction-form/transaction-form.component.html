@@ -2,8 +2,8 @@
   <legend>Add Transaction</legend>
   <form id="transactionForm" [formGroup]="transactionValues">
     <div>
-      <select formControlName="type" name="type" id="typeSelect" [ngClass]="{'error': typeError}"
-        (ngModelChange)="isTypeValid(transactionValues.controls['type'].errors)">
+      <select formControlName="type" name="type" id="typeSelect"
+        [ngClass]="{'error': typeError && displayError['type']}" (focus)="displayError['type'] = false">
         <option class="typeOption" value="" hidden>Transaction Type</option>
         <option class="typeOption" value="Adjustment">Adjustment</option>
         <option class="typeOption" value="Deposit">Deposit</option>
@@ -11,25 +11,26 @@
         <option class="typeOption" value="Purchase">Purchase</option>
         <option class="typeOption" value="Transfer">Transfer</option>
       </select>
-      <small name="type" class="error-msj">{{typeError}}</small>
+      <small name="type" class="error-msj" *ngIf="displayError['type']">{{typeError}}</small>
     </div>
     <div>
-      <input formControlName="description" type="text" [ngClass]="{'error': descriptionError}" (ngModelChange)="isDescriptionValid(
-      transactionValues.controls['description'].errors
-    )" placeholder="Description">
-      <small name="description" class="error-msj">{{descriptionError}}</small>
+      <input formControlName="description" type="text"
+        [ngClass]="{'error': descriptionError && displayError['description']}"
+        (focus)="displayError['description'] = false" placeholder="Description">
+      <small name="description" class="error-msj" *ngIf="displayError['description']">{{descriptionError}}</small>
     </div>
     <div>
-      <input formControlName="date" type="date" [max]="getToday()" [ngClass]="{'error': dateError}"
-        (ngModelChange)="isDateValid(transactionValues.controls['date'].errors);">
-      <small name="date" class="error-msj">{{dateError}}</small>
+      <input formControlName="date" type="date" [max]="getToday()"
+        [ngClass]="{'error': dateError && displayError['date']}" (focus)="displayError['date'] = false">
+      <small name="date" class="error-msj" *ngIf="displayError['date']">{{dateError}}</small>
     </div>
     <div>
       <div>
         <span id="currencySign">$</span>
-        <input formControlName="amount" type="number" step=".01" [ngClass]="{'error': amountError}"
-          (ngModelChange)="isAmountValid(transactionValues.controls['amount'].errors)" placeholder="Amount">
-        <small name="amount" class="error-msj">{{amountError}}</small>
+        <input formControlName="amount" type="number" step=".01"
+          [ngClass]="{'error': amountError && displayError['amount']}" placeholder="Amount"
+          (focus)="displayError['amount'] = false">
+        <small name="amount" class="error-msj" *ngIf="displayError['amount']">{{amountError}}</small>
       </div>
     </div>
     <button (click)="addTransaction()">Add</button>

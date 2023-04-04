@@ -6,7 +6,20 @@
     </div>
     <div id="div-logout">
       <h1 id="greetings"><strong>Hello,</strong> {{user}}!</h1>
-      <img id="log-out-btn" (click)="logOut()" src="./assets/Logout.png" alt="Logout Icon">
+      <div class="dropdown">
+        <input id="check" type="checkbox"><label for="check">
+          <img id="settings" src="./assets/Settings.png" alt="Settings Icon"></label>
+        <div class="dropdown-content">
+          <button class="logOut" (click)="logOut()">
+            <img id="log-out-btn" src="./assets/Logout.png" alt="Logout Icon">
+            Log Out
+          </button>
+          <button class="deleteUser" (click)="deleteUser()">
+            <img id="imgDelete" src="./assets/Forever.png" alt="Delete Button">
+            Delete User
+          </button>
+        </div>
+      </div>
     </div>
   </header>
 

@@ -43,22 +43,121 @@ header {
   font-weight: 400;
 }
 
-#log-out-btn {
-  height: 55px;
-  margin: 5px 0 5px 20px;
+label {
+  height: 50px;
+  margin: 5px 0 5px 15px;
   background-color: transparent;
+  cursor: pointer;
   filter: invert(58%) sepia(40%) saturate(685%) hue-rotate(114deg)
     brightness(88%) contrast(89%) drop-shadow(2px 2px 2px rgb(25, 25, 25));
 }
 
-#log-out-btn:hover {
-  filter: invert(100%) sepia(1%) saturate(7488%) hue-rotate(184deg)
-    brightness(113%) contrast(93%) drop-shadow(2px 2px 2px rgb(25, 25, 25));
-  cursor: pointer;
+#check:checked + label {
+  background-color: transparent;
+  filter: invert(99%) sepia(31%) saturate(21%) hue-rotate(40deg)
+    brightness(112%) contrast(92%) drop-shadow(2px 2px 2px rgb(25, 25, 25));
 }
 
-#log-out-btn:active {
-  filter: none;
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: var(--secondary-bg-color);
+  min-width: 150px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  margin-top: 0px;
+  right: 5px;
+  border-radius: 0 0 5px 5px;
+  border: 2px solid var(--secondary-bg-color);
+}
+
+.dropdown-content::before {
+  content: " ";
+  position: absolute;
+  width: 0;
+  height: 0;
+  top: -10px;
+  right: 20%;
+  margin-left: -10px;
+  border-style: solid;
+  border-width: 0 10px 10px 10px;
+  border-color: transparent transparent var(--secondary-bg-color) transparent;
+}
+
+.dropdown-content button {
+  background-color: var(--secondary-bg-color);
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 15px;
+}
+
+.dropdown-content button:hover {
+  background-color: var(--main-bg-color);
+}
+
+#settings {
+  padding: 15px 0;
+}
+
+#check {
+  display: none;
+}
+
+#check:hover ~ .dropdown-content {
+  display: block;
+}
+
+.dropdown-content:hover {
+  display: block;
+}
+
+#log-out-btn {
+  height: 25px;
+  background-color: transparent;
+  filter: invert(10%) sepia(4%) saturate(4698%) hue-rotate(175deg)
+    brightness(93%) contrast(84%);
+}
+
+.logOut {
+  color: var(--main-bg-color);
+  border-radius: 5px;
+  border: none;
+}
+
+.logOut:hover {
+  color: var(--secondary-bg-color);
+}
+
+.logOut:hover #log-out-btn {
+  filter: invert(58%) sepia(40%) saturate(685%) hue-rotate(114deg)
+    brightness(88%) contrast(89%);
+}
+
+#imgDelete {
+  height: 25px;
+  background-color: transparent;
+  filter: invert(10%) sepia(4%) saturate(4698%) hue-rotate(175deg)
+    brightness(93%) contrast(84%);
+}
+
+.deleteUser {
+  color: var(--main-bg-color);
+  border: none;
+  border-radius: 5px;
+}
+
+.deleteUser:hover {
+  color: var(--wrong);
+}
+
+.deleteUser:hover #imgDelete {
+  filter: invert(34%) sepia(92%) saturate(3696%) hue-rotate(341deg)
+    brightness(102%) contrast(108%);
 }
 
 main {

@@ -4,15 +4,15 @@ import {
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 import { Account } from '../models/account';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountsService {
-  _userId: string = localStorage.getItem('userId');
-  _urlAccounts: string = 'http://localhost:3000/accounts';
+  _urlAccounts: string = 'http://localhost:8080/accounts';
   _accountsList: Array<Account> = [];
   constructor(private http: HttpClient) {}
 
@@ -25,35 +25,49 @@ export class AccountsService {
   }
 
   private handlerException(error: HttpErrorResponse) {
+    let toast = Swal.mixin({
+      toast: true,
+      position: 'bottom-end',
+      color: '#232931',
+      iconColor: '#232931',
+      background: '#ff5c5c',
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: false,
+    });
     if (error.error instanceof ErrorEvent) {
-      console.log('Front Error: ' + error.error.message);
+      console.log('Front Error: ' + error.status + ' - ' + error.error.message);
+      return toast.fire({
+        icon: 'error',
+        title: error.error.message,
+      });
     } else {
-      console.log('Back Error: ' + error.error.message + error.error.status);
+      console.log('Back Error: ' + error.status + ' - ' + error.error.message);
+      return toast.fire({
+        icon: 'error',
+        title: error.error.message,
+      });
     }
-    return throwError('Comunication Error');
   }
 
-  getAccountsByUser(): Observable<Array<Account>> {
-    return this.http
-      .get<Array<Account>>(this._urlAccounts + '?userId=' + this._userId)
-      .pipe(catchError(this.handlerException));
-  }
-
-  getAccountById(id: number): Observable<Account> {
-    return this.http
-      .get<Account>(this._urlAccounts + `/${id}`)
-      .pipe(catchError(this.handlerException));
-  }
-
-  addAccount(account: Account): Observable<Account> {
-    return this.http.post<Account>(
-      this._urlAccounts,
-      account,
+  getAccountsByUser(userId: number): Observable<any> {
+    return this.http.get(
+      this._urlAccounts + '/user?userId=' + Number(userId),
       this.getHttpOptions()
     );
   }
 
-  updateAccount(id: number, account: Account): Observable<Account> {
+  getAccountById(id: number): Observable<any> {
+    return this.http.get(this._urlAccounts + `/${id}`, this.getHttpOptions());
+  }
+
+  addAccount(account: Account): Observable<any> {
+    return this.http
+      .post<Account>(this._urlAccounts + '/add', account, this.getHttpOptions())
+      .pipe(catchError(this.handlerException));
+  }
+
+  updateAccount(id: number, account: Account): Observable<any> {
     return this.http.put<Account>(
       `${this._urlAccounts}/${id}`,
       account,
@@ -62,6 +76,9 @@ export class AccountsService {
   }
 
   deleteAccount(id: number) {
-    return this.http.delete(`${this._urlAccounts}/${id}`);
+    return this.http.delete(
+      `${this._urlAccounts}/${id}`,
+      this.getHttpOptions()
+    );
   }
 }

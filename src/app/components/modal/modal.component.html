@@ -12,8 +12,10 @@
 
       <div>
         <input #name="ngModel" type="text" placeholder="Account Name" name="nameAccount" [(ngModel)]="newAccount.name"
-          required minlength="2" maxlength="15" [ngClass]="{'error': name.invalid && name.dirty && submitAccount}">
-        <span *ngIf="name.invalid && name.dirty && submitAccount">
+          required minlength="2" maxlength="15"
+          [ngClass]="{'error': name.invalid && name.dirty && displayError['name']}"
+          (focus)="displayError['name'] = false">
+        <span *ngIf="name.invalid && name.dirty && displayError['name']">
           <small name="nameAccount" class="error-msj" *ngIf="name.errors['required']">Name
             must cannot be blank.</small>
           <small name="nameAccount" class="error-msj" *ngIf="name.errors['minlength'] || name.errors['maxlength']">Name
@@ -23,7 +25,8 @@
 
       <div>
         <select #type="ngModel" name="typeAccount" id="typeAccount" [(ngModel)]="newAccount.type"
-          [ngClass]="{'error': type.invalid && type.dirty && submitAccount}" required>
+          [ngClass]="{'error': type.invalid && type.dirty && displayError['type']}" required
+          (focus)="displayError['type'] = false">
           <option value="" hidden>Type</option>
           <option value="Cash">Cash</option>
           <option value="Bank">Bank</option>
@@ -31,7 +34,7 @@
           <option value="Transport">Transport</option>
           <option value="Savings">Savings</option>
         </select>
-        <span *ngIf="type.invalid && type.dirty && submitAccount">
+        <span *ngIf="type.invalid && type.dirty && displayError['type']">
           <small name="typeAccount" class="error-msj" *ngIf="type.errors['required']">Select an account
             type.
           </small>
@@ -43,8 +46,9 @@
           <span id="accountCurrencySign">$</span>
           <input #initialBalance="ngModel" name="initialBalance" type="number" step=".01" placeholder="Initial Balance"
             required min="0" max="9999999999" [(ngModel)]="newAccount.initialBalance"
-            [ngClass]="{'error': initialBalance.invalid && initialBalance.dirty && submitAccount}">
-          <span *ngIf="initialBalance.invalid && initialBalance.dirty && submitAccount">
+            [ngClass]="{'error': initialBalance.invalid && initialBalance.dirty && displayError['initialBalance']}"
+            (focus)="displayError['initialBalance'] = false">
+          <span *ngIf="initialBalance.invalid && initialBalance.dirty && displayError['initialBalance']">
             <small name="initialBalance" class="error-msj" *ngIf="initialBalance.errors['required']">
               Initial balance cannot be blank.
             </small>
