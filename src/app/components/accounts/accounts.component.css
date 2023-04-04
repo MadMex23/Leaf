@@ -129,15 +129,22 @@ table.scroll tbody td,
 table.scroll thead th {
   width: 375px;
   text-indent: 15px;
+  width: 375px;
+  text-indent: 15px;
 }
 
 table.scroll thead th:last-child {
   width: 100px;
   text-indent: 0px;
   text-align: center;
+  width: 100px;
+  text-indent: 0px;
+  text-align: center;
 }
 
 table.scroll tbody td:last-child {
+  width: 80px;
+  padding-left: 10px;
   width: 80px;
   padding-left: 10px;
 }
@@ -158,6 +165,7 @@ table.scroll tbody::-webkit-scrollbar-thumb {
 }
 
 .descriptionField img {
+  padding-left: 10px;
   padding-left: 10px;
 }
 

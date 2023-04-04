@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .div-form {
   grid-column: 2/3;
   display: flex;
@@ -100,3 +101,107 @@
   background-color: whitesmoke;
   color: var(--secondary-bg-color);
 }
+=======
+.div-form {
+  grid-column: 2/3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  height: 100%;
+}
+
+.div-form h1 {
+  color: var(--secondary-bg-color);
+  font-size: 40px;
+}
+
+.form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form input {
+  background: #d9d4d4;
+  border-radius: 10px;
+  width: 75%;
+  height: 50px;
+  font-size: 20px;
+  text-align: center;
+  color: var(--main-bg-color);
+  box-sizing: border-box;
+}
+
+.form ::placeholder {
+  color: var(--secondary-bg-color);
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.form input:hover {
+  border: 2px solid var(--secondary-bg-color);
+}
+
+.form input:focus {
+  outline: none;
+  border: 2px solid black;
+}
+
+.form small {
+  font-size: 10px;
+  line-height: 0;
+  margin: 10px;
+}
+
+.error {
+  border: 2px solid var(--wrong);
+}
+
+.error-msj {
+  color: var(--wrong);
+  font-weight: 400;
+}
+
+.show-error {
+  color: transparent !important;
+}
+
+#login-password-eye img {
+  margin: 13px 0 0 225px;
+  background-color: transparent;
+  filter: invert(58%) sepia(9%) saturate(3048%) hue-rotate(115deg)
+    brightness(94%) contrast(78%);
+  width: 25px;
+  cursor: pointer;
+  position: absolute;
+}
+
+.form button {
+  height: 55px;
+  margin: 5px;
+  padding: 15px 35px;
+  background: #2aa9898a;
+  border-radius: 10px;
+  color: whitesmoke;
+  font-size: 18px;
+  font-weight: 600;
+  border: none;
+}
+
+.form button:hover {
+  border: 2px solid whitesmoke;
+  cursor: pointer;
+}
+
+.form button:active {
+  background-color: whitesmoke;
+  color: var(--secondary-bg-color);
+}
+>>>>>>> 7adf0627a0538a7a163913a74f0030525dc5e9e8
